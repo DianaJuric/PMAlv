@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PmaLv</string>
+    <string name="image">Bild</string>
+    <string name="ime">Name</string>
+    <string name="prezime">Nachname</string>
+    <string name="datum_rodenja">Geburtsdatum</string>
+    <string name="unesi_datum">Bitte geben Sie ein Datum ein</string>
+    <string name="nastavi">weiter</string>
+    <string name="predmet">Thema</string>
+    <string name="profesor">Professor</string>
+    <string name="trenutna_godina">Laufendes Jahr</string>
+    <string name="broj_sati_predavanja">Anzahl der Vorlesungsstunden</string>
+    <string name="broj_sati_lv_a">Anzahl der LV-Stunden</string>
+    <string name="personal_info">Persönliche Informationen</string>
+    <string name="datum">Datum</string>
+    <string name="student_info">Schülerinfo</string>
+    <string name="akademska_godina">Akademisches Jahr</string>
+    <string name="sati_predavanja">Unterrichtsstunden</string>
+    <string name="sati_lv_a">Stunden von LV</string>
+    <string name="pocetak">Zuhause</string>
+    <string name="studenti">Studenten</string>
+    <string name="kreiraj_studenta">Erstellen Sie einen Schüler</string>
+</resources>
