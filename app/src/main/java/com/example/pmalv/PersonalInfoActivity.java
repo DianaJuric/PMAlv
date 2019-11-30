@@ -18,6 +18,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private EditText oDatum;
     private Button oButton;
 
+
     private String ime;
     private String prezime;
     private String datum;
