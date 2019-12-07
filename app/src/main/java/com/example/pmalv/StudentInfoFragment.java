@@ -4,8 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +18,11 @@ import android.widget.Button;
 import com.google.android.material.textfield.TextInputLayout;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StudentInfoFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StudentInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StudentInfoFragment extends Fragment {
+
+    private String ime;
+    private String prezime;
+    private String datum;
 
     private TextInputLayout oPredmet;
     private TextInputLayout oProfesor;
@@ -31,98 +31,81 @@ public class StudentInfoFragment extends Fragment {
     private TextInputLayout oSatiLva;
     private Button oDaljeButton;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private String predmet;
+    private String profesor;
+    private String akGod;
+    private String satiPredavanja;
+    private String satiLva;
+    private StudentInfoListener studentInfoListener;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public StudentInfoFragment() {
-        // Required empty public constructor
+    public interface StudentInfoListener {
+        void onStudentInfoSent(String predmet, String ime_profesora, String akademska_godina, String sati_predavanja, String sati_LV);
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StudentInfoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StudentInfoFragment newInstance(String param1, String param2) {
-        StudentInfoFragment fragment = new StudentInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_student_info,container,false);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        oDaljeButton=view.findViewById(R.id.studentInfoButton);
+        oPredmet=view.findViewById(R.id.inputPredmet);
+        oProfesor=view.findViewById(R.id.inputProfesor);
+        oAkGod=view.findViewById(R.id.inputAkGod);
+        oSatiPredavanja=view.findViewById(R.id.inputSatiPredavanja);
+        oSatiLva=view.findViewById(R.id.inputSatiLv);
+
+        oPredmet.getEditText().addTextChangedListener(personalInfoWatcher);
+        oProfesor.getEditText().addTextChangedListener(personalInfoWatcher);
+        oAkGod.getEditText().addTextChangedListener(personalInfoWatcher);
+        oSatiPredavanja.getEditText().addTextChangedListener(personalInfoWatcher);
+        oSatiLva.getEditText().addTextChangedListener(personalInfoWatcher);
+
+        oDaljeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateNewRecordActivity.setCurrentItem (2, true);
+            }
+        });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_student_info, container, false);
-        oPredmet = (TextInputLayout)view.findViewById(R.id.inputPredmet);
-        oProfesor = (TextInputLayout)view.findViewById(R.id.inputProfesor);
-        oAkGod = (TextInputLayout)view.findViewById(R.id.inputAkGod);
-        oSatiPredavanja = (TextInputLayout)view.findViewById(R.id.inputSatiPredavanja);
-        oSatiLva = (TextInputLayout)view.findViewById(R.id.inputSatiLv);
-        oDaljeButton = (Button)view.findViewById(R.id.studentInfoButton);
-        return view;
-    }
+    private TextWatcher personalInfoWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
         }
-    }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            predmet = oPredmet.getEditText().getText().toString();
+            profesor = oProfesor.getEditText().getText().toString();
+            akGod = oAkGod.getEditText().getText().toString();
+            satiPredavanja = oSatiPredavanja.getEditText().getText().toString();
+            satiLva = oSatiLva.getEditText().getText().toString();
+
+            studentInfoListener.onStudentInfoSent(predmet, profesor, akGod, satiPredavanja, satiLva);
+        }
+    };
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        if(context instanceof  StudentInfoListener) {
+            studentInfoListener = (StudentInfoListener) context;
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        studentInfoListener = null;
     }
 }

@@ -6,10 +6,10 @@ import java.util.List;
 
 public class MyDataStorage {
 
-    private List<Student> students;
+    private List<Object> students;
     private MyDataStorage()
     {
-        students = new ArrayList<Student>();
+        students = new ArrayList<Object>();
     }
     static private MyDataStorage instanca;
 
@@ -18,6 +18,7 @@ public class MyDataStorage {
         if(instanca==null)
         {
             instanca = new MyDataStorage();
+            instanca.students.add("Studenti");
         }
         return  instanca;
     }
@@ -26,7 +27,7 @@ public class MyDataStorage {
         this.students.add(student);
     }
 
-    public List<Student> getStudents() {
+    public List<Object> getStudents() {
         return students;
     }
 }

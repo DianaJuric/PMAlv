@@ -2,22 +2,54 @@ package com.example.pmalv;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
-public class CreateNewRecordActivity extends AppCompatActivity {
+import com.example.pmalv.PersonalInfoFragment;
+import com.example.pmalv.R;
+import com.example.pmalv.StudentInfoFragment;
+import com.example.pmalv.SummaryFragment;
+import com.example.pmalv.MyAdapter;
+
+import android.os.Bundle;
+
+public class CreateNewRecordActivity extends AppCompatActivity implements PersonalInfoFragment.PersonalInfoListener, StudentInfoFragment.StudentInfoListener {
+
+    public static ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_record);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        viewPager = findViewById(R.id.vpPager);
+        viewPager.setOffscreenPageLimit(2);
 
-        PersonalInfoFragment fragment = new PersonalInfoFragment();
-        fragmentTransaction.add(R.id.personalInfoFragment, fragment);
-        fragmentTransaction.commit();
+        MyAdapter viewPagerAdapter = new MyAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+    }
+
+    @Override
+    public void onPersonalInfoSent(String ime, String prezime, String datum) {
+        String tag = "android:switcher:" + R.id.vpPager + ":" + 2;
+        SummaryFragment fragment = (SummaryFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        fragment.updatePersonalInfo(ime, prezime, datum);
+    }
+
+    @Override
+    public void onStudentInfoSent(String predmet, String ime_profesora, String akademska_godina, String sati_predavanja, String sati_LV) {
+        String tag = "android:switcher:" + R.id.vpPager + ":" + 2;
+        SummaryFragment fragment = (SummaryFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        fragment.updateStudentInfo(predmet, ime_profesora, akademska_godina, sati_predavanja, sati_LV);
+    }
+
+    public static void setCurrentItem (int item, boolean smoothScroll) {
+        viewPager.setCurrentItem(item, smoothScroll);
     }
 }

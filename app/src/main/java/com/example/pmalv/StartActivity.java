@@ -19,10 +19,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.example.pmalv.StudentAdapter;
+
+import com.example.pmalv.R;
+
 
 import java.util.List;
 import java.util.Locale;
-
+//////LV4////////////////
 public class StartActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
@@ -34,6 +38,7 @@ public class StartActivity extends AppCompatActivity implements
     String[] languages = { "Cro", "Eng", "Ger"};
     String[] items_value = new String[]{"hr", "en", "de"};
     int check = 0;
+
 
     @SuppressWarnings("deprecation")
     private void setAppLocale (String localeCode)
@@ -62,13 +67,13 @@ public class StartActivity extends AppCompatActivity implements
         StvoriButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent OtvoriPersonalInfo = new Intent(getApplicationContext(), PersonalInfoActivity.class);
-                startActivity(OtvoriPersonalInfo);
+                Intent OtvoriNewRecordActivity = new Intent(getApplicationContext(), CreateNewRecordActivity.class);
+                startActivity(OtvoriNewRecordActivity);
             }
         });
 
         MyDataStorage spremnik = MyDataStorage.getInstance();
-        List<Student> students = spremnik.getStudents();
+        List<Object> students = spremnik.getStudents();
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new StudentAdapter(students);
